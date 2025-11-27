@@ -1,0 +1,356 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: #0a0a16;
+    color: #e0e0ff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+}
+
+.header {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+h1 {
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: transparent;
+    background: linear-gradient(90deg, #00ffff, #ff00ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    animation: pulse 3s infinite alternate;
+}
+
+@keyframes pulse {
+    0% { text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
+    100% { text-shadow: 0 0 20px rgba(255, 0, 255, 0.7), 0 0 30px rgba(255, 0, 255, 0.5); }
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #a0a0ff;
+    margin-bottom: 20px;
+}
+
+/* --- Mode Selection --- */
+.mode-selection {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.mode-btn {
+    background: rgba(16, 16, 32, 0.8);
+    border: 1px solid #00ffff;
+    color: #00ffff;
+    padding: 8px 20px;
+    font-size: 0.9rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.mode-btn:hover {
+    background: rgba(0, 255, 255, 0.1);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.mode-btn.active {
+    background: #00ffff;
+    color: #0a0a16;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    font-weight: bold;
+}
+
+.game-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    background: rgba(16, 16, 32, 0.7);
+    padding: 15px 25px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+}
+
+.player-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+}
+
+.player-label {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: #a0a0ff;
+}
+
+.player-name {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #00ffff;
+}
+
+.current-player {
+    color: #ff00ff;
+    text-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
+}
+
+.score {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #00ffff;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    margin: 0 auto 30px;
+    max-width: 400px;
+    background: rgba(16, 16, 32, 0.7);
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+    position: relative;
+}
+
+.cell {
+    aspect-ratio: 1;
+    background: rgba(10, 10, 22, 0.8);
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.cell:hover {
+    background: rgba(20, 20, 40, 0.8);
+    border-color: rgba(255, 0, 255, 0.5);
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+}
+
+.cell.x {
+    color: #00ffff;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+}
+
+.cell.o {
+    color: #ff00ff;
+    text-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
+}
+
+.winning-cell {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* --- Winning Line Styles --- */
+.winning-line {
+    position: absolute;
+    height: 4px; 
+    background-color: white;
+    width: 0;
+    transform-origin: left center; 
+    transition: width 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+    z-index: 10;
+    border-radius: 2px;
+    pointer-events: none;
+    display: none;
+}
+
+.winning-line.active {
+    display: block;
+}
+
+.winning-line.x-win {
+    background-color: #00ffff;
+    box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+}
+
+.winning-line.o-win {
+    background-color: #ff00ff;
+    box-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+}
+/* -------------------------------- */
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+button.control-btn {
+    background: linear-gradient(45deg, #00aaff, #aa00ff);
+    border: none;
+    color: white;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(170, 0, 255, 0.5);
+}
+
+button.control-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px rgba(170, 0, 255, 0.7);
+}
+
+button.control-btn:active {
+    transform: translateY(1px);
+}
+
+.game-status {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    min-height: 40px;
+    color: #00ffff;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+}
+
+.win-message {
+    color: #ff00ff;
+    text-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
+    animation: pulse 1.5s infinite;
+}
+
+.grid-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.1;
+}
+
+.grid-line {
+    position: absolute;
+    background: linear-gradient(90deg, transparent, #00ffff, transparent);
+}
+
+.grid-line.horizontal {
+    width: 100%;
+    height: 1px;
+}
+
+.grid-line.vertical {
+    width: 1px;
+    height: 100%;
+}
+
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -2;
+}
+
+/* --- NEW: GitHub Button Styles --- */
+.footer {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.github-btn {
+    font-family: inherit; /* Matches site font */
+    cursor: pointer;
+    background: #000000;
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 100px;
+    transition: all 0.5s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none; /* For the anchor tag */
+}
+
+.github-btn:hover {
+    transform: scale(1.1);
+    background: #0a0a0a;
+    border-color: rgba(255, 255, 0, 0.3);
+}
+
+.github-btn:active {
+    transform: scale(1);
+}
+
+.github-btn:hover .icon {
+    fill: #ffff00;
+    transform: scale(1.1) rotate(360deg);
+    filter: drop-shadow(0 0 5px rgba(255, 208, 0, 0.8))
+        drop-shadow(0 0 10px rgba(255, 208, 0, 0.6));
+}
+
+.github-btn:hover .text {
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2))
+        drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
+}
+
+.text {
+    transition: all 1s ease;
+}
+
+.icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-top: -3px;
+    transition: all 1s ease;
+}
+
+@media (max-width: 600px) {
+    h1 { font-size: 2.5rem; }
+    .game-board { max-width: 300px; }
+    .cell { font-size: 2.5rem; }
+    .game-info { flex-direction: column; gap: 15px; }
+}
