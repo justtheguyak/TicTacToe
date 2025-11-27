@@ -1,23 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Game state
     const gameState = {
         board: ['', '', '', '', '', '', '', '', ''],
         currentPlayer: 'X',
         gameActive: true,
-        mode: 'pvp', // 'pvp' or 'bot'
+        mode: 'pvp',
         isBotTurn: false,
         scores: {
             X: 0,
             O: 0
         },
         winningCombinations: [
-            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Cols
-            [0, 4, 8], [2, 4, 6]             // Diagonals
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
         ]
     };
 
-    // DOM elements
     const gameBoard = document.getElementById('game-board');
     const currentPlayerElement = document.getElementById('current-player');
     const gameStatusElement = document.getElementById('game-status');
@@ -27,13 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const restartButton = document.getElementById('restart-btn');
     const particlesContainer = document.getElementById('particles');
     const winningLine = document.getElementById('winning-line');
-    
-    // Mode Buttons
     const btnPvp = document.getElementById('btn-pvp');
     const btnBot = document.getElementById('btn-bot');
     const player2Label = document.getElementById('player-2-label');
 
-    // Initialize the game board
     function initializeBoard() {
         const cells = gameBoard.querySelectorAll('.cell');
         cells.forEach(cell => cell.remove());
@@ -47,7 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Handle cell click (Player Move)
     function handleCellClick(index) {
         if (gameState.board[index] !== '' || !gameState.gameActive || gameState.isBotTurn) {
             return;
@@ -61,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Execute a move
     function executeMove(index) {
         gameState.board[index] = gameState.currentPlayer;
         
@@ -87,14 +80,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Bot Logic
     function makeBotMove() {
         if (!gameState.gameActive) return;
 
         let moveIndex;
-        moveIndex = findBestMove('O'); // Try to Win
-        if (moveIndex === null) moveIndex = findBestMove('X'); // Block
-        if (moveIndex === null && gameState.board[4] === '') moveIndex = 4; // Center
+        moveIndex = findBestMove('O');
+        if (moveIndex === null) moveIndex = findBestMove('X');
+        if (moveIndex === null && gameState.board[4] === '') moveIndex = 4;
         if (moveIndex === null) { 
             const available = gameState.board.map((val, idx) => val === '' ? idx : null).filter(val => val !== null);
             moveIndex = available[Math.floor(Math.random() * available.length)];
@@ -161,50 +153,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Line Calculation ---
     function drawWinningLine(combination) {
-        // Reset
         winningLine.className = 'winning-line active';
         winningLine.classList.add(gameState.currentPlayer === 'X' ? 'x-win' : 'o-win');
         winningLine.style.width = '0';
         winningLine.style.transform = 'none';
 
-        // Get start and end cells
         const startCell = document.querySelector(`.cell[data-index="${combination[0]}"]`);
         const endCell = document.querySelector(`.cell[data-index="${combination[2]}"]`);
         const boardRect = gameBoard.getBoundingClientRect();
         const startRect = startCell.getBoundingClientRect();
         const endRect = endCell.getBoundingClientRect();
 
-        // Calculate Centers relative to board
         const x1 = startRect.left - boardRect.left + startRect.width / 2;
         const y1 = startRect.top - boardRect.top + startRect.height / 2;
         const x2 = endRect.left - boardRect.left + endRect.width / 2;
         const y2 = endRect.top - boardRect.top + endRect.height / 2;
 
-        // Calculate Angle and Distance
         const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
         const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
 
-        // Extension: width / 2.2 for tighter fit
         const extension = startRect.width / 2.2; 
         const totalLength = length + (extension * 2);
 
-        // Adjust starting position
         const startX = x1 - extension * Math.cos(angle * (Math.PI / 180));
         const startY = y1 - extension * Math.sin(angle * (Math.PI / 180));
 
-        // Apply Styles
         winningLine.style.left = `${startX}px`;
         winningLine.style.top = `${startY}px`;
         winningLine.style.transform = `rotate(${angle}deg)`;
         
-        // Trigger animation
         requestAnimationFrame(() => {
             winningLine.style.width = `${totalLength}px`;
         });
     }
-    // ---------------------------------------
 
     function updateScores() {
         scoreXElement.textContent = gameState.scores.X;
