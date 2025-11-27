@@ -1,3 +1,4 @@
+<div align="center">
 # 🎮 Tic Tac Toe - Futuristic Edition
 
 <div align="center">
