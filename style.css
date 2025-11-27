@@ -52,7 +52,6 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* --- Mode Selection --- */
 .mode-selection {
     display: flex;
     justify-content: center;
@@ -179,13 +178,12 @@ h1 {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* --- Winning Line Styles --- */
 .winning-line {
     position: absolute;
-    height: 4px; 
+    height: 4px;
     background-color: white;
     width: 0;
-    transform-origin: left center; 
+    transform-origin: left center;
     transition: width 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
     z-index: 10;
     border-radius: 2px;
@@ -206,7 +204,6 @@ h1 {
     background-color: #ff00ff;
     box-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
 }
-/* -------------------------------- */
 
 .controls {
     display: flex;
@@ -289,7 +286,6 @@ button.control-btn:active {
     z-index: -2;
 }
 
-/* --- NEW: GitHub Button Styles --- */
 .footer {
     margin-top: 30px;
     display: flex;
@@ -298,7 +294,7 @@ button.control-btn:active {
 }
 
 .github-btn {
-    font-family: inherit; /* Matches site font */
+    font-family: inherit;
     cursor: pointer;
     background: #000000;
     color: #ffffff;
@@ -311,7 +307,7 @@ button.control-btn:active {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    text-decoration: none; /* For the anchor tag */
+    text-decoration: none;
 }
 
 .github-btn:hover {
