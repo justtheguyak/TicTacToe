@@ -1,7 +1,6 @@
 <div align="center">
-# 🎮 Tic Tac Toe - Futuristic Edition
 
-<div align="center">
+# 🎮 Tic Tac Toe - Futuristic Edition
 
 **A modern, neon-styled web implementation of the classic game.**
 <br>
@@ -16,6 +15,7 @@ Features smooth animations, a smart CPU opponent, and a responsive design.
 ---
 
 ## 📖 About The Project
+...
 
 This project is a visually engaging recreation of Tic Tac Toe built with vanilla web technologies. It moves away from the traditional pen-and-paper look, offering a glowing neon aesthetic, particle background effects, and fluid CSS animations.
 
