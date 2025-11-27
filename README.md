@@ -2,7 +2,6 @@
 
 <div align="center">
 
-![Project Banner](screenshot.png)
 **A modern, neon-styled web implementation of the classic game.**
 <br>
 Features smooth animations, a smart CPU opponent, and a responsive design.
